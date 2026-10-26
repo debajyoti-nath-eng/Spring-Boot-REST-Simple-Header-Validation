@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2026 Debajyoti Nath. All rights reserved.
+ */
 package com.example.headervalidation.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Validates all required request headers before the matched controller executes.
+ *
+ * <p>Requests missing one or more required headers receive a JSON
+ * {@code 400 Bad Request} response listing all invalid headers.
+ *
+ * @author Debajyoti Nath (Technical Architect - Java Backend)
+ */
 @Component
 public class RequiredHeadersInterceptor implements HandlerInterceptor {
 
@@ -20,10 +31,24 @@ public class RequiredHeadersInterceptor implements HandlerInterceptor {
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * Creates the interceptor with the JSON serializer for error responses.
+     *
+     * @param objectMapper serializer used to write the validation response
+     */
     public RequiredHeadersInterceptor(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Allows requests containing every required non-blank header.
+     *
+     * @param request current HTTP request
+     * @param response current HTTP response
+     * @param handler selected MVC handler
+     * @return {@code true} if all required headers are valid; {@code false} otherwise
+     * @throws IOException if writing the error response fails
+     */
     @Override
     public boolean preHandle(
             HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
