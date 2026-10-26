@@ -23,4 +23,11 @@ public class HeaderValidationController {
             @RequestHeader("X-Request-Id") String requestId) {
         return headerValidationService.validateHeaders(clientId, requestId);
     }
+
+    @GetMapping("/intercepted/headers")
+    public HeaderResponse validateHeadersWithInterceptor(
+            @RequestHeader("X-Client-Id") String clientId,
+            @RequestHeader("X-Request-Id") String requestId) {
+        return new HeaderResponse("Headers accepted by interceptor", clientId, requestId);
+    }
 }
